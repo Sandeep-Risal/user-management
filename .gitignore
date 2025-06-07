@@ -1,0 +1,7 @@
+../server/node_modules
+../server/dist
+../server/build
+../server/logs
+../server/logs/*
+../server/.env
+
