@@ -7,6 +7,14 @@ import {
   validatePassword,
   validateEmail,
 } from "../utils/formValidations.js";
+import { generateAccessToken, generateRefreshToken } from "../auth/auth.js";
+
+const cookieOptions = {
+  httpOnly: true,
+  secure: true,
+  //   sameSite: "Lax",
+  maxAge: 15 * 60 * 1000,
+};
 
 // Register a new account
 const register = async (req, res) => {
@@ -129,16 +137,27 @@ const login = async (req, res) => {
       });
     }
 
+    // Generate tokens
+    const accessToken = await generateAccessToken(accountExists.dataValues);
+    const refreshToken = await generateRefreshToken(accountExists.dataValues);
+
+    accountExists.update({
+      refreshToken: refreshToken,
+    });
+
+    // set cookies
+    res.cookie("accessToken", accessToken, {
+      ...cookieOptions,
+      maxAge: 15 * 60 * 1000,
+    });
+    res.cookie("refreshToken", refreshToken, {
+      ...cookieOptions,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     return res.status(StatusCode.SUCCESS).json({
       success: true,
       message: "Login successful",
-      //   data: {
-      //     // id: accountExists.id,
-      //     username: accountExists.username,
-      //     email: accountExists.email,
-      //     firstName: accountExists.firstName,
-      //     lastName: accountExists.lastName,
-      //   },
     });
   } catch (e) {
     console.log(e);
