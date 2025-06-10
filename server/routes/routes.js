@@ -5,8 +5,110 @@ import {
   getAllUsers,
   udpateUser,
 } from "../controller/userController.js";
+import { login, register } from "../controller/accountController.js";
 
 const router = Router();
+
+// Authentication Routes
+
+/**
+ * @swagger
+ * /auth/register:
+ *   tags:
+ *     - name: Auth
+ *   post:
+ *     summary: Register a new user
+ *     description: Creates a new user account
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *               - firstName
+ *               - lastName
+ *               - confirmPassword
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Username of the user
+ *                 example: "john_doe"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email address of the user
+ *                 example: "john.doe@example.com"
+ *               password:
+ *                 type: string
+ *                 description: Password of the user
+ *                 example: "password123"
+ *               firstName:
+ *                 type: string
+ *                 description: First name of the user
+ *                 example: "John"
+ *               lastName:
+ *                 type: string
+ *                 description: Last name of the user
+ *                 example: "Doe"
+ *               confirmPassword:
+ *                 type: string
+ *                 description: Confirm password of the user
+ *                 example: "password123"
+ *             example:
+ *               username: "john_doe"
+ *               email: "john.doe@example.com"
+ *               firstName: "John"
+ *               lastName: "Doe"
+ *               password: ""
+ *               confirmPassword: ""
+ *     responses:
+ *       '201':
+ *         description: User created successfully
+ *       '400':
+ *         description: Bad request - Invalid input or duplicate user
+ *       '500':
+ *         description: Internal server error
+ */
+router.post("/auth/register", register);
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Login a user
+ *     description: Logs in a user with the given credentials
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Username of the user
+ *                 example: "john_doe"
+ *               password:
+ *                 type: string
+ *                 description: Password of the user
+ *                 example: "password123"
+ *     responses:
+ *       '200':
+ *         description: User logged in successfully
+ *       '400':
+ *         description: Bad request - Invalid input or duplicate user
+ */
+router.post("/auth/login", login);
+// router.post("/auth/logout", logoutUser);
+// router.post("/auth/refresh-token", refreshToken);
+
 // Users Routes
 
 /**

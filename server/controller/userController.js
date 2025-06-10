@@ -1,7 +1,10 @@
 import { Op } from "sequelize";
 import { StatusCode } from "../enums/statusCode.js";
 import { UserModel } from "../postgres/postgres.js";
-import { emailRegex } from "../utils/regex.js";
+import {
+  validateRequiredFields,
+  validateEmail,
+} from "../utils/formValidations.js";
 
 const getAllUsers = async (req, res) => {
   try {
@@ -55,13 +58,21 @@ const createUser = async (req, res) => {
 
   try {
     // Validate required fields
-    if (!email || !empId || !name || !designation) {
+    if (validateRequiredFields({ ...req.body })) {
       return res.status(StatusCode.BAD_REQUEST).json({
         success: false,
         error: "Missing required fields",
         key: Object.entries(req.body)
           .filter(([_, value]) => !value)
           .map(([key]) => key),
+      });
+    }
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(StatusCode.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid email format",
+        key: ["email"],
       });
     }
 
@@ -77,24 +88,16 @@ const createUser = async (req, res) => {
         return res.status(StatusCode.BAD_REQUEST).json({
           success: false,
           error: "Employee ID already exists",
-          key: "empId",
+          key: ["empId"],
         });
       }
       if (existingUser.email === email) {
         return res.status(StatusCode.BAD_REQUEST).json({
           success: false,
           error: "Email already exists",
-          key: "email",
+          key: ["email"],
         });
       }
-    }
-    // Validate email format
-    if (!emailRegex.test(email)) {
-      return res.status(StatusCode.BAD_REQUEST).json({
-        success: false,
-        error: "Invalid email format",
-        key: "email",
-      });
     }
 
     // Create new user
@@ -119,7 +122,7 @@ const createUser = async (req, res) => {
 };
 
 const udpateUser = async (req, res) => {
-  const { email, empId, name, designation } = req.body;
+  const { email, empId } = req.body;
   try {
     const { id } = req.params;
     const user = await UserModel.findByPk(id);
@@ -132,7 +135,7 @@ const udpateUser = async (req, res) => {
     }
 
     // Validate required fields
-    if (!email || !empId || !name || !designation) {
+    if (validateRequiredFields({ ...req.body })) {
       return res.status(StatusCode.BAD_REQUEST).json({
         success: false,
         error: "Missing required fields",
@@ -141,7 +144,14 @@ const udpateUser = async (req, res) => {
           .map(([key]) => key),
       });
     }
-
+    // Validate email format
+    if (!validateEmail(email)) {
+      return res.status(StatusCode.BAD_REQUEST).json({
+        success: false,
+        error: "Invalid email format",
+        key: ["email"],
+      });
+    }
     // Check for existing user
     const existingUser = await UserModel.findOne({
       where: {
@@ -154,24 +164,16 @@ const udpateUser = async (req, res) => {
         return res.status(StatusCode.BAD_REQUEST).json({
           success: false,
           error: "Employee ID already exists",
-          key: "empId",
+          key: ["empId"],
         });
       }
       if (existingUser.email === email) {
         return res.status(StatusCode.BAD_REQUEST).json({
           success: false,
           error: "Email already exists",
-          key: "email",
+          key: ["email"],
         });
       }
-    }
-    // Validate email format
-    if (!emailRegex.test(email)) {
-      return res.status(StatusCode.BAD_REQUEST).json({
-        success: false,
-        error: "Invalid email format",
-        key: "email",
-      });
     }
 
     await UserModel.update(req.body, {
