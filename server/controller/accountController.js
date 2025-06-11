@@ -8,6 +8,7 @@ import {
   validateEmail,
 } from "../utils/formValidations.js";
 import { generateAccessToken, generateRefreshToken } from "../auth/auth.js";
+import jwt from "jsonwebtoken";
 
 const cookieOptions = {
   httpOnly: true,
@@ -168,4 +169,127 @@ const login = async (req, res) => {
   }
 };
 
-export { register, login };
+// Refresh a user's token
+const refreshToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  try {
+    // check if refresh token is found
+    if (!refreshToken) {
+      return res.status(StatusCode.FORBIDDEN).json({
+        success: false,
+        error: "Refresh token is not found",
+      });
+    }
+
+    // check if refresh token is valid
+    const user = await AccountModel.findOne({
+      where: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    jwt.verify(refreshToken, process.env.JWT_SECRET, async (err, decoded) => {
+      if (err) {
+        return res.status(StatusCode.FORBIDDEN).json({
+          success: false,
+          error: "Refresh token is invalid",
+        });
+      }
+      const token = await generateAccessToken(user.dataValues);
+
+      res.cookie("accessToken", token, {
+        ...cookieOptions,
+        maxAge: 15 * 60 * 1000,
+      });
+
+      return res.status(StatusCode.SUCCESS).json({
+        success: true,
+        message: "Token refreshed successfully",
+      });
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+// Logout a user
+const logout = async (req, res) => {
+  try {
+    const accessToken = req.cookies.accessToken;
+    const refreshToken = req.cookies.refreshToken;
+
+    if (!accessToken) {
+      return res.status(StatusCode.FORBIDDEN).json({
+        success: false,
+        error: "Access token is not found",
+      });
+    }
+
+    const user = await AccountModel.findOne({
+      where: {
+        refreshToken: refreshToken,
+      },
+    });
+
+    if (user) {
+      user.update({
+        refreshToken: null,
+      });
+    }
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    return res.status(StatusCode.SUCCESS).json({
+      success: true,
+      message: "Logout successful",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+      message: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+// Get a user's profile
+const getProfile = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  try {
+    const user = await AccountModel.findOne({
+      where: {
+        refreshToken: refreshToken,
+      },
+    });
+    if (!user) {
+      return res.status(StatusCode.FORBIDDEN).json({
+        success: false,
+        error: "User not found",
+      });
+    }
+    return res.status(StatusCode.SUCCESS).json({
+      success: true,
+      // message: "Profile fetched successfully",
+      data: {
+        id: user.dataValues.id,
+        username: user.dataValues.username,
+        email: user.dataValues.email,
+        // fullName: `${user.dataValues.firstName} ${user.dataValues.lastName}`,
+        firstName: user.dataValues.firstName,
+        lastName: user.dataValues.lastName,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(StatusCode.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+};
+
+export { register, login, refreshToken, logout, getProfile };

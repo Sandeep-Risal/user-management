@@ -1,5 +1,27 @@
 import { DataTypes } from "sequelize";
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateUser:
+ *      type: object
+ *      required:
+ *        - name
+ *        - email
+ *        - designation
+ *        - empId
+ *      properties:
+ *        name:
+ *          type: string
+ *        email:
+ *          type: string
+ *        designation:
+ *          type: string
+ *        empId:
+ *          type: string
+ */
+
 const createUserModel = async (sequelize) => {
   const User = sequelize.define("User", {
     id: {

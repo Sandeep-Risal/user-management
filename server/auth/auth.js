@@ -1,20 +1,37 @@
 import jwt from "jsonwebtoken";
+import { StatusCode } from "../enums/statusCode.js";
 
 const generateAccessToken = async (user) => {
-  const token = jwt.sign({ username: user.username }, "abcd", {
+  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
     expiresIn: "15m",
   });
   return token;
 };
 const generateRefreshToken = async (user) => {
-  const token = jwt.sign({ username: user.username }, "cdef", {
+  const token = jwt.sign({ username: user.username }, process.env.JWT_SECRET, {
     expiresIn: "7d",
   });
   return token;
 };
 
-// const verifyAccessToken = (token) => {
-//   return jwt.verify(token, process.env.JWT_SECRET);
-// };
+const verifyToken = async (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
+  if (!token) {
+    return res.status(StatusCode.UNAUTHORIZED).json({
+      success: false,
+      error: "Invalid token",
+    });
+  }
 
-export { generateAccessToken, generateRefreshToken };
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(StatusCode.FORBIDDEN).json({
+        success: false,
+        message: "Token expired",
+      });
+    }
+    next();
+  });
+};
+
+export { generateAccessToken, generateRefreshToken, verifyToken };

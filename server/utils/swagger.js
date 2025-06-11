@@ -9,16 +9,18 @@ const options = {
       version: "1.0.0",
       description: "REST API documentation",
     },
-    // components: {
-    //   securitySchemas: {
-    //     bearerAuth: {
-    //       type: "http",
-    //       scheme: "bearer",
-    //       bearerFormat: "JWT",
-    //     },
-    //   },
-    // },
-    // security: [{ bearerAuth: [] }],
+    components: {
+      securitySchemes: {
+        Bearer: {
+          type: "http",
+          in: "header",
+          scheme: "bearer",
+          name: "Authorization",
+          bearerFormat: "JWT",
+        },
+      },
+    },
+    security: [{ Bearer: [] }],
   },
   apis: ["./routes/*.js", "./model/*.js"],
 };
