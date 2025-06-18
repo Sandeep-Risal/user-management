@@ -9,6 +9,13 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@radix-ui/react-avatar": "^1.1.10",
+    "@radix-ui/react-checkbox": "^1.3.2",
+    "@radix-ui/react-dialog": "^1.1.14",
+    "@radix-ui/react-label": "^2.1.7",
+    "@radix-ui/react-radio-group": "^1.3.7",
+    "@radix-ui/react-select": "^2.2.5",
     "@radix-ui/react-slot": "^1.2.3",
     "axios": "^1.10.0",
     "axios-auth-refresh": "^3.3.6",
@@ -19,12 +26,16 @@
     "lucide-react": "^0.516.0",
     "moment": "^2.30.1",
     "next": "15.3.3",
+    "next-themes": "^0.4.6",
     "path-to-regexp": "^8.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.58.1",
+    "react-query": "^3.39.3",
+    "sonner": "^2.0.5",
     "tailwind-merge": "^3.3.1",
     "yup": "^1.6.1",
+    "zod": "^3.25.67",
     "zustand": "^5.0.5"
   },
   "devDependencies": {

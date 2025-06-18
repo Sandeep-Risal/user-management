@@ -11,3 +11,11 @@ export enum CookieKeys {
   REFRESH_TOKEN = "refreshToken",
   IS_LOGGED_IN = "isLoggedIn",
 }
+
+export enum TOAST_TYPES {
+  info,
+  success,
+  error,
+  warning,
+  description,
+}

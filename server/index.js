@@ -2,15 +2,20 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import router from "./routes/routes.js";
 import cors from "cors";
+import router from "./routes/routes.js";
 import swaggerDocs from "./utils/swagger.js";
 import cookieParser from "cookie-parser";
 import { connection } from "./postgres/postgres.js";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // or the origin of your frontend
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(router);
