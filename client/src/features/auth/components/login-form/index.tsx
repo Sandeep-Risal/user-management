@@ -4,6 +4,8 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 
+import { TOAST_TYPES } from "@/src/enums";
+import { IError } from "@/src/interfaces";
 import PasswordInput from "@/src/shared/components/password-input";
 import { Button } from "@/src/shared/components/ui/button";
 import {
@@ -15,14 +17,12 @@ import {
   FormMessage,
 } from "@/src/shared/components/ui/form";
 import { Input } from "@/src/shared/components/ui/input";
+import { showToast } from "@/src/shared/lib/toast-utils";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { ILoginForm } from "../../interfaces";
 import { loginSchema } from "../../schema";
 import { login } from "../../services";
-import { IError } from "@/src/interfaces";
-import { showToast } from "@/src/shared/lib/toast-utils";
-import { TOAST_TYPES } from "@/src/enums";
 
 const LoginForm = () => {
   const form = useForm<ILoginForm>({
@@ -49,7 +49,7 @@ const LoginForm = () => {
   });
 
   const onSubmit = (data: ILoginForm) => {
-    loginMutation.mutate(data);
+    loginMutation?.mutate(data);
   };
   return (
     <Form {...form}>
