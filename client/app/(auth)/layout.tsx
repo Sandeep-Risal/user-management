@@ -1,9 +1,8 @@
 "use client";
 
-import { Toaster } from "@/src/shared/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -19,7 +18,6 @@ export default function RootLayout({
   });
   return (
     <QueryClientProvider client={queryClient}>
-      <Toaster richColors closeButton position="top-center" />
       <div className="flex flex-col items-center justify-center h-screen">
         {children}
       </div>

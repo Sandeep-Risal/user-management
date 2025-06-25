@@ -19,7 +19,6 @@ let UserModel = null;
 let AccountModel = null;
 
 const connection = async () => {
-  console.log("process.env.DB_NAME", sequelize.getDatabaseName());
   try {
     await sequelize.authenticate();
     console.log("Connection has been established successfully.");

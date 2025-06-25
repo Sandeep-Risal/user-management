@@ -1,10 +1,13 @@
 "use client";
 
+import { setCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 
-import { TOAST_TYPES } from "@/src/enums";
+import { constants } from "@/src/constants";
+import { CookieKeys, TOAST_TYPES } from "@/src/enums";
 import { IError } from "@/src/interfaces";
 import PasswordInput from "@/src/shared/components/password-input";
 import { Button } from "@/src/shared/components/ui/button";
@@ -25,31 +28,40 @@ import { loginSchema } from "../../schema";
 import { login } from "../../services";
 
 const LoginForm = () => {
+  const router = useRouter();
   const form = useForm<ILoginForm>({
     resolver: yupResolver(loginSchema),
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       username: "",
       password: "",
     },
-    mode: "onChange",
   });
 
   const loginMutation = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      form.reset();
+      setCookie(CookieKeys.IS_LOGGED_IN, true);
       showToast(TOAST_TYPES.success, data?.data?.message);
+      router.push("/");
     },
     onError: (error: IError) => {
-      error?.key.forEach((key) => {
-        form.setError(key as "username" | "password", {
-          message: error?.error,
+      if (error?.key && Array.isArray(error?.key)) {
+        error?.key.forEach((key) => {
+          form.setError(key as "username" | "password", {
+            message: error?.error,
+          });
         });
-      });
+      } else {
+        showToast(TOAST_TYPES.error, constants?.messages?.SOMETHING_WENT_WRONG);
+      }
     },
   });
 
-  const onSubmit = (data: ILoginForm) => {
-    loginMutation?.mutate(data);
+  const onSubmit: SubmitHandler<ILoginForm> = (data) => {
+    loginMutation.mutate(data);
   };
   return (
     <Form {...form}>

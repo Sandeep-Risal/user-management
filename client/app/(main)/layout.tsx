@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Toaster } from "@/src/shared/components/ui/sonner";
+import { cookies } from "next/headers";
+import SidebarLayout from "@/src/shared/components/main-layout/sidebar/contents/provider-layout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,14 +23,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" data-google-analytics-opt-out="">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster richColors closeButton position="top-center" />
-        {children}
-      </body>
-    </html>
-  );
+  const cookieStore = await cookies();
+  const defaultOpen = cookieStore.get("sidebar_state")?.value === "true";
+
+  return <SidebarLayout defaultOpen={defaultOpen}>{children}</SidebarLayout>;
 }

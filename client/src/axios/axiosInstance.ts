@@ -84,6 +84,7 @@ const httpRequest = async (
           error?.response?.data?.code === 1010
         ? (window.location.href = "/forbidden")
         : null;
+
       throw error?.response?.data;
     }
   }

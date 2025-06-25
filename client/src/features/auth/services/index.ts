@@ -6,4 +6,12 @@ const login = (data: ILoginForm) => {
   return httpRequest("/auth/login", HttpMethods.POST, data);
 };
 
-export { login };
+const getProfile = () => {
+  return httpRequest("/profile", HttpMethods.GET);
+};
+
+const logout = () => {
+  return httpRequest("/auth/logout", HttpMethods.POST);
+};
+
+export { login, getProfile, logout };

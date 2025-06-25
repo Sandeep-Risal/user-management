@@ -12,3 +12,5 @@ export const constants = {
     TIMEOUT: "Request timed out",
   },
 };
+
+export const authRoutes = ["/login", "/register", "/forgot-password", "/reset"];
