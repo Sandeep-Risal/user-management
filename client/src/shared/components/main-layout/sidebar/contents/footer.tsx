@@ -54,7 +54,7 @@ const AppSidebarFooter = () => {
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="h-full">
-              <SidebarMenuButton>
+              <SidebarMenuButton className="focus-visible:ring-0 group-data-[collapsible=icon]:p-0!">
                 <UserInfo
                   name={`${profileData?.firstName} ${profileData?.lastName}`}
                   email={profileData?.email}

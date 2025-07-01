@@ -134,7 +134,7 @@ router.post("/auth/logout", verifyToken, logout);
 
 /**
  * @openapi
- * /auth/refresh-token:
+ * /auth/refresh:
  *   post:
  *    tags:
  *    - Authentication
@@ -144,7 +144,7 @@ router.post("/auth/logout", verifyToken, logout);
  *      '200':
  *        description: Token refreshed successfully
  */
-router.post("/auth/refresh-token", verifyToken, refreshToken);
+router.post("/auth/refresh", refreshToken);
 
 /**
  * @openapi

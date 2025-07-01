@@ -17,17 +17,19 @@ const generateRefreshToken = async (user) => {
 const verifyToken = async (req, res, next) => {
   const token = req.cookies.accessToken;
   if (!token) {
-    return res.status(StatusCode.UNAUTHORIZED).json({
+    return res.status(StatusCode.FORBIDDEN).json({
       success: false,
       error: "Invalid token",
+      code: 1006,
     });
   }
 
   jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
-      return res.status(StatusCode.FORBIDDEN).json({
+      return res.status(StatusCode.UNAUTHORIZED).json({
         success: false,
         message: "Token expired",
+        code: 1005,
       });
     }
     next();

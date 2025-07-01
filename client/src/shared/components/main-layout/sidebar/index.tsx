@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,10 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/src/shared/components/ui/sidebar";
-import { sidebarItems } from "./sidebar-items";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+
 import AppSidebarFooter from "./contents/footer";
+import { sidebarItems } from "./sidebar-items";
 
 export function AppSidebar() {
   const pathname = usePathname();

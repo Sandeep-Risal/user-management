@@ -3,6 +3,7 @@ import React from "react";
 import { SidebarProvider, SidebarTrigger } from "../../../ui/sidebar";
 import { AppSidebar } from "..";
 import { QueryClient, QueryClientProvider } from "react-query";
+import PageBreadCrumbs from "../../breadcrumbs";
 
 const SidebarLayout = ({
   children,
@@ -25,8 +26,9 @@ const SidebarLayout = ({
       <SidebarProvider defaultOpen={defaultOpen}>
         <div className="flex w-full">
           <AppSidebar />
-          <main className="flex-1 shrink-0">
+          <main className="flex-1 shrink-0 p-4 bg-accent text-accent-foreground space-y-4">
             <SidebarTrigger />
+            <PageBreadCrumbs />
             {children}
           </main>
         </div>

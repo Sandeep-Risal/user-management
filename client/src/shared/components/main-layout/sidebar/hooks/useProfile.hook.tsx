@@ -1,7 +1,6 @@
 import { useProfileStore } from "../store/useProfile.store";
 import { useMutation, useQuery } from "react-query";
 import { getProfile, logout } from "@/src/features/auth/services";
-import { clearAllSessionAndLocalStates } from "@/src/axios/axiosInstance";
 import { useRouter } from "next/navigation";
 import { showToast } from "@/src/shared/lib/toast-utils";
 import { CookieKeys, TOAST_TYPES } from "@/src/enums";

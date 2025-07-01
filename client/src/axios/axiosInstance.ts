@@ -28,7 +28,7 @@ export const clearAllSessionAndLocalStates = () => {
 
 const refreshAuthLogic = (_failedRequest: any) => {
   return axiosInstance
-    .post("/refresh")
+    .post("/auth/refresh")
     .then(() => {
       return Promise.resolve();
     })
