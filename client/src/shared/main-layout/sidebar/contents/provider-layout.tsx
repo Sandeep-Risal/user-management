@@ -1,6 +1,9 @@
 "use client";
 import React from "react";
-import { SidebarProvider, SidebarTrigger } from "../../../ui/sidebar";
+import {
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/src/shared/components/ui/sidebar";
 import { AppSidebar } from "..";
 import { QueryClient, QueryClientProvider } from "react-query";
 import PageBreadCrumbs from "../../breadcrumbs";

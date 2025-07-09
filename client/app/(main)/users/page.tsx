@@ -1,7 +1,8 @@
+import UsersComponent from "@/src/features/users";
 import React from "react";
 
 const Users = () => {
-  return <div>Users</div>;
+  return <UsersComponent />;
 };
 
 export default Users;

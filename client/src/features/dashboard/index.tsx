@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useProfileStore } from "@/src/shared/components/main-layout/sidebar/store/useProfile.store";
+import { useProfileStore } from "@/src/shared/main-layout/sidebar/store/useProfile.store";
 
 const DashboardContent = () => {
   const { profileData } = useProfileStore();

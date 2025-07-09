@@ -11,7 +11,7 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "../../ui/breadcrumb";
+} from "@/src/shared/components/ui/breadcrumb";
 
 const PageBreadCrumbs = () => {
   const segments = useSelectedLayoutSegments();

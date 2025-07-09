@@ -5,6 +5,8 @@ import { appConfig } from "@/src/config/app-config";
 // import { constants } from "@/src/constants";
 import { CookieKeys, HttpMethods } from "@/src/enums";
 import { clearCookie } from "@/src/shared/lib/utils";
+import { toast } from "sonner";
+import { constants } from "../constants";
 
 const { api } = appConfig;
 // const { SESSION_EXPIRED, TIMEOUT } = constants.messages;
@@ -16,9 +18,10 @@ export const axiosInstance = axios.create({
 });
 
 export const clearAllSessionAndLocalStates = () => {
-  // toast.error(SESSION_EXPIRED, {
-  //   id: "session",
-  // });
+  toast.error(constants.messages.SESSION_EXPIRED, {
+    id: "session",
+  });
+
   clearCookie(CookieKeys.IS_LOGGED_IN);
 
   setTimeout(() => {

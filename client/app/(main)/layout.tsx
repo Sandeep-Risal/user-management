@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import SidebarLayout from "@/src/shared/components/main-layout/sidebar/contents/provider-layout";
+import SidebarLayout from "@/src/shared/main-layout/sidebar/contents/provider-layout";
 
 export const metadata: Metadata = {
   title: "TEST APP",

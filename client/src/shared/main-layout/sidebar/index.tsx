@@ -30,6 +30,7 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.label}>
                     <SidebarMenuButton
                       asChild
+                      tooltip={item.label}
                       isActive={item.href === pathname}
                     >
                       <Link href={item.href}>

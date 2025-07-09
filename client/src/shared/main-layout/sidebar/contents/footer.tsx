@@ -2,20 +2,24 @@ import { Logout } from "iconsax-react";
 import { ChevronsUpDown } from "lucide-react";
 import React from "react";
 
-import { Avatar, AvatarFallback, AvatarImage } from "../../../ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@/src/shared/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../../ui/dropdown-menu";
+} from "@/src/shared/components/ui/dropdown-menu";
 import {
   SidebarFooter,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "../../../ui/sidebar";
+} from "@/src/shared/components/ui/sidebar";
 import useProfile from "../hooks/useProfile.hook";
 import { useProfileStore } from "../store/useProfile.store";
 
